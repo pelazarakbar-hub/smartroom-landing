@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartRoom – Monitoring & Otomatisasi Ruangan Berbasis IoT dan AI</title>
+  <meta name="description" content="SmartRoom membantu kamu memantau suhu, kelembapan, cahaya, dan keberadaan di kamar, lalu mengotomatisasi perangkat dengan saran AI yang bisa dijelaskan.">
+  <meta name="theme-color" content="#0F766E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;1,400&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Lewati ke konten utama</a>
+
+<!-- Ikon (sprite) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-temp" viewBox="0 0 24 24"><path d="M14 14.8V5a2 2 0 1 0-4 0v9.8a4 4 0 1 0 4 0z"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.2 6 10.5A6 6 0 0 1 6 13.5C6 9.2 12 3 12 3z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-fan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.6"/><path d="M12 10.4C10 6 10.5 3 13 3c2.2 0 2.4 3.2-1 7.4zM13.6 12c4.4-2 7.4-1.5 7.4 1 0 2.2-3.2 2.4-7.4-1zM12 13.6c2 4.4 1.5 7.4-1 7.4-2.2 0-2.4-3.2 1-7.4zM10.4 12C6 14 3 13.5 3 11c0-2.2 3.2-2.4 7.4 1z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></symbol>
+  <symbol id="i-room" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 15h4M7 10h2M13 10h4"/></symbol>
+  <symbol id="i-device" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M9.5 7h5M9.5 11h5M9.5 15h3"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M10 4l1.8 5.200L17 11l-5.2 1.800L10 18l-1.8-5.200L3 11l5.2-1.800zM18 3v4M16 5h4M18 16v4M16 18h4"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M7 11v9H4v-9zM7 11l4-8a2 2 0 0 1 2 2v4h6a2 2 0 0 1 2 2.300l-1.2 7a2 2 0 0 1-2 1.700H7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M17 13V4h3v9zM17 13l-4 8a2 2 0 0 1-2-2v-4H5a2 2 0 0 1-2-2.300l1.2-7A2 2 0 0 1 6.2 5H17"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.500l4.5 4.500L19 7.5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 1 1 12 0v6l2 2H4zM10 21h4"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 12.500a10.5 10.5 0 0 1 14 0M8.5 16a5.5 5.5 0 0 1 7 0M12 19.500h.01"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="logo" href="#top" aria-label="SmartRoom beranda">
+      <span class="logo-mark"><svg class="icon"><use href="#i-home"/></svg></span>SmartRoom
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#fitur">Fitur</a></li>
+      <li><a href="#layar">Layar Aplikasi</a></li>
+      <li><a href="#ai">AI Insight</a></li>
+      <li><a href="#privasi">Privasi</a></li>
+      <li><a href="#desain">Desain</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#unduh">Coba SmartRoom</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Buka menu" aria-expanded="false" aria-controls="navLinks"><svg class="icon"><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">IoT + AI untuk hunian</p>
+      <h1>Tahu kondisi kamarmu <span>dalam sekali lihat.</span></h1>
+      <p class="lead">SmartRoom memantau suhu, kelembapan, cahaya, dan keberadaan secara real-time, lalu membantumu mematikan lampu atau kipas dengan satu ketukan, ditambah saran AI yang menjelaskan alasannya.</p>
+      <div class="cta-row">
+        <a class="btn btn-accent" href="#unduh">Mulai Sekarang</a>
+        <a class="btn btn-ghost" href="#layar">Lihat Layar Aplikasi</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>4</strong><span>Sensor utama</span></div>
+        <div><strong>5</strong><span>Layar, 1–2 ketukan</span></div>
+        <div><strong>24 jam</strong><span>Pola dianalisis AI</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone" data-phone aria-label="Pratinjau interaktif aplikasi SmartRoom"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="fitur">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Fitur</p>
+      <h2>Dirancang dari masalah nyata anak kos</h2>
+      <p class="lead">Dari riset pengguna: kamar panas dan pengap, lupa mematikan perangkat, ragu pada saran AI, dan khawatir soal privasi. Setiap fitur menjawab satu masalah.</p>
+    </div>
+    <div class="features-grid">
+      <article class="feature reveal"><div class="ico"><svg class="icon"><use href="#i-temp"/></svg></div><h3>Status ruangan instan</h3><p>Banner status dan grid sensor 2×2 menampilkan suhu, kelembapan, cahaya, dan keberadaan tanpa perlu membuka menu.</p></article>
+      <article class="feature reveal"><div class="ico"><svg class="icon"><use href="#i-bulb"/></svg></div><h3>Kontrol cepat</h3><p>Toggle lampu dan kipas langsung di Beranda, di area jangkauan jempol, supaya tidak ada lagi yang lupa dimatikan.</p></article>
+      <article class="feature reveal"><div class="ico"><svg class="icon"><use href="#i-spark"/></svg></div><h3>AI yang menjelaskan</h3><p>Setiap rekomendasi punya bagian “Mengapa disarankan?” dan tombol jempol untuk umpan balik.</p></article>
+      <article class="feature reveal"><div class="ico"><svg class="icon"><use href="#i-shield"/></svg></div><h3>Privasi di tanganmu</h3><p>Izin sensor keberadaan bisa kamu nyalakan atau matikan sendiri kapan saja dari halaman Profil.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section showcase" id="layar">
+  <div class="container show-grid">
+    <div>
+      <p class="eyebrow">Layar aplikasi</p>
+      <h2>Lima layar, semuanya dalam jangkauan jempol</h2>
+      <p class="lead" style="margin:12px 0 28px">Pilih salah satu untuk melihatnya di ponsel, atau ketuk navigasi bawah pada pratinjau.</p>
+      <div class="show-list" role="tablist" aria-label="Pilih layar" id="showList"></div>
+    </div>
+    <div class="phone-wrap"><div class="phone" data-phone data-showcase aria-label="Pratinjau interaktif lima layar SmartRoom"></div></div>
+  </div>
+</section>
+
+<section class="section" id="ai">
+  <div class="container split">
+    <div class="reveal">
+      <p class="eyebrow">AI Insight</p>
+      <h2>Saran pintar yang tidak terasa seperti spam</h2>
+      <p class="lead" style="margin-top:12px">AI membaca pola sensor 24 jam terakhir, lalu memberi sedikit rekomendasi yang berprioritas, lengkap dengan alasan dan kontrol penuh di tanganmu.</p>
+      <ul class="ticks">
+        <li><svg class="icon"><use href="#i-check"/></svg><span><b>Explainability.</b> Selalu ada alasan di balik setiap saran.</span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span><b>Satu aksi utama.</b> “Buat aturan otomatis” untuk menerapkannya.</span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span><b>Umpan balik.</b> Jempol atas/bawah agar saran makin relevan.</span></li>
+      </ul>
+    </div>
+    <div class="ai-card reveal" id="aiDemo">
+      <div class="head"><span class="num">01</span><span class="badge err">Prioritas tinggi</span></div>
+      <h3>Gunakan kipas pada siang hari</h3>
+      <p>Suhu ruangan meningkat secara konsisten antara pukul 11.00–14.00.</p>
+      <div class="insight"><b>Mengapa disarankan?</b>Suhu di atas 30°C selama 2 jam terakhir dan ruangan sedang terisi.</div>
+      <button class="btn btn-accent btn-sm" data-apply>Terapkan Saran</button>
+      <div class="rec-actions"><span>Apakah saran ini membantu?</span>
+        <span style="display:flex;gap:8px">
+          <button class="icon-btn" aria-pressed="false" aria-label="Membantu" data-vote><svg class="icon"><use href="#i-up"/></svg></button>
+          <button class="icon-btn" aria-pressed="false" aria-label="Tidak membantu" data-vote><svg class="icon"><use href="#i-down"/></svg></button>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="privasi" style="padding-top:0">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Privasi & kepercayaan</p>
+      <h2>Datamu, aturanmu</h2>
+      <p class="lead">Sensor keberadaan hanya aktif jika kamu mengizinkannya. Pengaturan privasi dipisahkan dari pengaturan akun agar mudah ditemukan.</p>
+    </div>
+    <div class="card reveal" style="max-width:560px;padding:20px">
+      <div class="row"><svg class="icon"><use href="#i-users"/></svg><div class="grow"><b>Izinkan sensor keberadaan</b><small>Dipakai untuk saran hemat energi</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Izinkan sensor keberadaan"></button></div>
+      <div class="row"><svg class="icon"><use href="#i-bell"/></svg><div class="grow"><b>Notifikasi saran AI</b><small>Maksimal beberapa kali sehari</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Notifikasi saran AI"></button></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="desain" style="padding-top:0">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Sistem desain</p>
+      <h2>Palet teal yang tenang dan lolos kontras WCAG 2.1</h2>
+      <p class="lead">Semua pasangan warna teks dan komponen diperiksa terhadap ambang AA. Tipografi memakai Poppins untuk judul dan Inter untuk isi.</p>
+    </div>
+    <div class="swatches reveal">
+      <div class="swatch"><i style="background:#0F766E"></i><div><b>Primary 600</b>#0F766E · 5,47:1</div></div>
+      <div class="swatch"><i style="background:#1E3A8A"></i><div><b>Secondary 900</b>#1E3A8A · 10,36:1</div></div>
+      <div class="swatch"><i style="background:#FBBF24"></i><div><b>Accent 400</b>#FBBF24 · teks gelap</div></div>
+      <div class="swatch"><i style="background:#15803D"></i><div><b>Success</b>#15803D · 5,02:1</div></div>
+      <div class="swatch"><i style="background:#B91C1C"></i><div><b>Error</b>#B91C1C · 6,47:1</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="unduh">
+  <div class="container">
+    <div class="cta reveal">
+      <h2>Kamar lebih nyaman, listrik lebih hemat</h2>
+      <p>Mulai pantau kondisi ruanganmu hari ini. Gratis untuk mahasiswa dan penghuni kos.</p>
+      <a class="btn btn-accent" href="#top">Coba SmartRoom</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div><a class="logo" href="#top" style="color:#F1F5F9">SmartRoom</a><p style="margin-top:8px;max-width:340px">Sistem Monitoring dan Otomatisasi Ruangan Berbasis IoT dan AI.</p></div>
+      <div><p><b style="color:#F1F5F9">Proyek</b></p><p>Desain UI/UX · Informatika 5C · FTI</p><p>Kelompok 4</p></div>
+      <div><p><b style="color:#F1F5F9">Tim</b></p><p>Fauzi Nugraha · Elazar Akbar Prasetyo · Moch Aditya Hidayat · Muhamad Ahyar · Muhammad Luthfi N</p></div>
+    </div>
+    <p class="foot-bottom">© 2026 SmartRoom – Kelompok 4. Dosen pengampu: Fathoni Mahardika, S.Kom, M.T.</p>
+  </div>
+</footer>
+
+<!-- ===== Template layar aplikasi ===== -->
+<template id="tpl-home">
+  <div class="banner"><div><small>Kondisi ruangan</small><div class="big">Perlu perhatian</div></div><span class="pill">Suhu tinggi</span></div>
+  <div class="sec-title"><h4>Ringkasan Sensor</h4><a href="#fitur">Lihat detail</a></div>
+  <div class="grid2">
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-temp"/></svg></div><span class="label">Suhu</span><span class="val">32°C</span><span class="badge err">Tinggi</span></div>
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-drop"/></svg></div><span class="label">Kelembapan</span><span class="val">65%</span><span class="badge ok">Normal</span></div>
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-sun"/></svg></div><span class="label">Intensitas Cahaya</span><span class="val">420 lx</span><span class="badge ok">Cukup</span></div>
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-users"/></svg></div><span class="label">Keberadaan</span><span class="val">Ada</span><span class="badge info">1 orang</span></div>
+  </div>
+  <div class="sec-title"><h4>Kontrol Cepat</h4></div>
+  <div class="card">
+    <div class="row"><svg class="icon"><use href="#i-bulb"/></svg><div class="grow"><b>Lampu Utama</b><small data-state>Menyala</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Lampu Utama"></button></div>
+    <div class="row"><svg class="icon"><use href="#i-fan"/></svg><div class="grow"><b>Kipas</b><small data-state>Mati</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Kipas"></button></div>
+  </div>
+</template>
+
+<template id="tpl-room">
+  <div class="screen-title"><small>Kamar Kos A2</small><h4>Ruangan</h4></div>
+  <div class="card chart-card"><div class="top"><div><span class="label">Suhu</span><div class="val">32°C</div></div><span class="badge err">Naik</span></div>
+    <svg class="chart" viewBox="0 0 280 80" preserveAspectRatio="none" role="img" aria-label="Grafik suhu naik dari pukul 06.00 ke 12.00"><polyline points="0,62 40,58 80,52 120,44 160,36 200,26 240,18 280,12" fill="none" stroke="var(--err)" stroke-width="2.5" stroke-linejoin="round"/></svg>
+    <div class="chart-axis"><span>06.00</span><span>09.00</span><span>12.00</span></div></div>
+  <div class="card chart-card"><div class="top"><div><span class="label">Kelembapan</span><div class="val">65%</div></div><span class="badge ok">Stabil</span></div>
+    <svg class="chart" viewBox="0 0 280 80" preserveAspectRatio="none" role="img" aria-label="Grafik kelembapan stabil"><polyline points="0,30 40,36 80,32 120,42 160,46 200,40 240,50 280,46" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linejoin="round"/></svg>
+    <div class="chart-axis"><span>06.00</span><span>09.00</span><span>12.00</span></div></div>
+  <div class="sec-title"><h4>Status Lingkungan</h4></div>
+  <div class="card">
+    <div class="row"><div class="grow"><b>Suhu</b><small>Aman: 20–30°C</small></div><span class="badge warn">Peringatan</span></div>
+    <div class="row"><div class="grow"><b>Kelembapan</b><small>Aman: 40–70%</small></div><span class="badge ok">Aman</span></div>
+    <div class="row"><div class="grow"><b>Cahaya</b><small>Ideal: 300–500 lx</small></div><span class="badge ok">Aman</span></div>
+    <div class="row"><div class="grow"><b>Kualitas Udara</b><small>Indeks: 42 AQI</small></div><span class="badge ok">Aman</span></div>
+  </div>
+</template>
+
+<template id="tpl-device">
+  <div class="screen-title"><small>4 perangkat terhubung</small><h4>Perangkat</h4></div>
+  <div class="card">
+    <div class="row"><svg class="icon"><use href="#i-bulb"/></svg><div class="grow"><b>Lampu Utama</b><small data-state>Online · Menyala</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Lampu Utama"></button></div>
+    <div class="row"><svg class="icon"><use href="#i-fan"/></svg><div class="grow"><b>Kipas Angin</b><small data-state>Online · Mati</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Kipas Angin"></button></div>
+    <div class="row"><svg class="icon"><use href="#i-wifi"/></svg><div class="grow"><b>Sensor Suhu</b><small>Online</small></div><span class="badge ok">Terhubung</span></div>
+    <div class="row"><svg class="icon"><use href="#i-wifi"/></svg><div class="grow"><b>Sensor Gerak</b><small>Tidak merespons</small></div><span class="badge err">Offline</span></div>
+  </div>
+  <button class="btn btn-primary btn-sm">+ Tambah Perangkat</button>
+</template>
+
+<template id="tpl-ai">
+  <div class="screen-title"><small>Analisis pintar harian</small><h4>AI Insight</h4></div>
+  <div class="card row" style="margin-bottom:14px"><svg class="icon"><use href="#i-spark"/></svg><div class="grow"><b>3 rekomendasi hari ini</b><small>Berdasarkan pola sensor 24 jam terakhir</small></div></div>
+  <div class="card rec">
+    <div style="display:flex;justify-content:space-between"><span class="badge err">Prioritas tinggi</span></div>
+    <h5>Gunakan kipas pada siang hari</h5>
+    <p>Suhu ruangan meningkat secara konsisten antara pukul 11.00–14.00.</p>
+    <div class="insight"><b>Mengapa disarankan?</b>Suhu di atas 30°C selama 2 jam terakhir dan ruangan sedang terisi.</div>
+    <button class="btn btn-accent btn-sm" data-apply>Terapkan Saran</button>
+    <div class="rec-actions"><span>Apakah saran ini membantu?</span><span style="display:flex;gap:6px">
+      <button class="icon-btn" aria-pressed="false" aria-label="Membantu" data-vote><svg class="icon"><use href="#i-up"/></svg></button>
+      <button class="icon-btn" aria-pressed="false" aria-label="Tidak membantu" data-vote><svg class="icon"><use href="#i-down"/></svg></button></span></div>
+  </div>
+</template>
+
+<template id="tpl-profile">
+  <div class="screen-title"><small>Akun</small><h4>Profil & Pengaturan</h4></div>
+  <div class="card row"><div class="avatar">RZ</div><div class="grow"><b>Rizqy</b><small>Kamar Kos A2</small></div></div>
+  <div class="sec-title"><h4>Privasi & Data</h4></div>
+  <div class="card"><div class="row"><div class="grow"><b>Sensor keberadaan</b><small>Izinkan deteksi orang di kamar</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Sensor keberadaan"></button></div></div>
+  <div class="sec-title"><h4>Akun</h4></div>
+  <div class="card">
+    <div class="row"><div class="grow"><b>Notifikasi</b><small>Saran AI dan peringatan</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Notifikasi"></button></div>
+    <div class="row"><div class="grow"><b>Pusat Bantuan</b><small>Panduan dan FAQ</small></div></div>
+  </div>
+</template>
+
+<script src="js/main.js"></script>
+</body>
+</html>
