@@ -1,22 +1,40 @@
-# SmartRoom – Landing Page
+# SmartRoom – Landing Page + AI Insight (Claude API)
 
-Landing page untuk **SmartRoom**, sistem monitoring dan otomatisasi ruangan berbasis IoT dan AI.
 Tugas Desain UI/UX – Kelompok 4, Informatika 5C (FTI).
 
 ## Struktur
 ```
-index.html      # markup + template layar aplikasi
-css/style.css   # design tokens (warna, tipografi) dari Tugas Week 6
-js/main.js      # mockup ponsel interaktif, toggle, menu mobile
+index.html        # halaman + template layar aplikasi
+css/style.css     # design tokens (warna, tipografi)
+js/main.js        # mockup ponsel, sensor simulasi, pemanggil API
+server.js         # backend Express: menyimpan API key & memanggil Claude
+.env.example      # contoh konfigurasi (salin jadi .env)
 ```
 
-## Menjalankan
-Tanpa build. Buka `index.html` langsung, atau di VS Code pasang ekstensi **Live Server** lalu klik *Go Live*.
+## Menjalankan (lokal)
+```bash
+npm install
+cp .env.example .env      # Windows: copy .env.example .env
+# isi ANTHROPIC_API_KEY di file .env
+npm start
+```
+Buka http://localhost:3000
 
-## Design system
-- Warna: primary `#0F766E`, secondary `#1E3A8A`, accent `#FBBF24` (teks gelap `#111827`), netral slate, semantik hijau/amber/merah/biru.
-- Font: Poppins 600 (judul), Inter 400/500 (isi).
-- Kontras mengikuti WCAG 2.1 AA; status selalu berpasangan dengan label teks; mode gelap otomatis (`prefers-color-scheme`).
+- Tanpa API key, server tetap jalan memakai aturan cadangan (tanpa Claude).
+- Jika halaman dibuka lewat Live Server (port 5500), jalankan juga `npm start`, lalu di `index.html` ubah
+  `window.SMARTROOM_API_BASE = "http://localhost:3000";`
 
-## Deploy (GitHub Pages)
-Repo → Settings → Pages → Source: `main` / `(root)`.
+## Cara kerja AI Insight
+```
+Browser (data sensor simulasi) -> POST /api/insight -> server.js -> Claude API
+                                                         |
+                                  JSON {judul, ringkasan, alasan, prioritas, aksi}
+```
+- API key hanya ada di server (`.env`), tidak pernah dikirim ke browser.
+- Input divalidasi & dibatasi rentangnya sebelum masuk ke prompt.
+- Perlindungan biaya: rate limit 12 permintaan/menit/IP, batas `MAX_DAILY_CALLS` per hari, cache 60 detik.
+- Jika Claude gagal/limit tercapai, server memakai aturan cadangan sehingga halaman tidak rusak.
+
+## Deploy
+GitHub Pages **tidak bisa** menjalankan `server.js`. Deploy ke Render / Railway / Vercel (Node), lalu isi
+environment variable `ANTHROPIC_API_KEY` di dashboard layanan tersebut. Jangan pernah commit file `.env`.

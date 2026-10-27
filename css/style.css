@@ -175,3 +175,13 @@ a { color: var(--primary); }
   .section { padding: 64px 0; } .features-grid { grid-template-columns: 1fr; } .swatches { grid-template-columns: 1fr 1fr; }
   .hero-stats { gap: 20px; }
 }
+
+/* AI live */
+.sim{border-top:1px dashed var(--border);margin-top:16px;padding-top:14px}
+.sim h4{font-size:14px;margin-bottom:4px}.sim p{font-size:12px;color:var(--caption)}
+.sim-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--input-border);background:var(--surface);color:var(--text);font:500 13px var(--font-body);cursor:pointer}
+.chip:hover{border-color:var(--primary)} .chip:disabled{opacity:.5;cursor:wait}
+.is-loading [data-ai]{opacity:.55}
+.banner .pill.ok{background:var(--ok-bg);color:var(--ok)}
+.btn-sm[hidden]{display:none}

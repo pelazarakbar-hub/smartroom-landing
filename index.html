@@ -117,16 +117,26 @@
       </ul>
     </div>
     <div class="ai-card reveal" id="aiDemo">
-      <div class="head"><span class="num">01</span><span class="badge err">Prioritas tinggi</span></div>
-      <h3>Gunakan kipas pada siang hari</h3>
-      <p>Suhu ruangan meningkat secara konsisten antara pukul 11.00–14.00.</p>
-      <div class="insight"><b>Mengapa disarankan?</b>Suhu di atas 30°C selama 2 jam terakhir dan ruangan sedang terisi.</div>
+      <div class="head"><span class="num">01</span><span class="badge err" data-ai="prioritas">Prioritas tinggi</span></div>
+      <h3 data-ai="judul">Gunakan kipas pada siang hari</h3>
+      <p data-ai="ringkasan">Suhu ruangan meningkat secara konsisten antara pukul 11.00–14.00.</p>
+      <div class="insight"><b>Mengapa disarankan?</b><span data-ai="alasan">Suhu di atas 30°C selama 2 jam terakhir dan ruangan sedang terisi.</span><small data-ai="sumber" style="display:block;margin-top:6px;color:var(--caption)"></small></div>
       <button class="btn btn-accent btn-sm" data-apply>Terapkan Saran</button>
       <div class="rec-actions"><span>Apakah saran ini membantu?</span>
         <span style="display:flex;gap:8px">
           <button class="icon-btn" aria-pressed="false" aria-label="Membantu" data-vote><svg class="icon"><use href="#i-up"/></svg></button>
           <button class="icon-btn" aria-pressed="false" aria-label="Tidak membantu" data-vote><svg class="icon"><use href="#i-down"/></svg></button>
         </span>
+      </div>
+      <div class="sim">
+        <h4>Panel simulasi</h4>
+        <p data-readout>Data sensor simulasi, berubah tiap beberapa detik.</p>
+        <div class="sim-btns">
+          <button class="chip" data-sim="panas">🔥 Panaskan ruangan</button>
+          <button class="chip" data-sim="orang">🚪 Orang masuk/keluar</button>
+          <button class="chip" data-sim="reset">↺ Reset</button>
+          <button class="chip" data-refresh>✨ Minta saran AI</button>
+        </div>
       </div>
     </div>
   </div>
@@ -187,24 +197,24 @@
 
 <!-- ===== Template layar aplikasi ===== -->
 <template id="tpl-home">
-  <div class="banner"><div><small>Kondisi ruangan</small><div class="big">Perlu perhatian</div></div><span class="pill">Suhu tinggi</span></div>
+  <div class="banner"><div><small>Kondisi ruangan</small><div class="big" data-bind="status">Perlu perhatian</div></div><span class="pill" data-bind="pill">Suhu tinggi</span></div>
   <div class="sec-title"><h4>Ringkasan Sensor</h4><a href="#fitur">Lihat detail</a></div>
   <div class="grid2">
-    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-temp"/></svg></div><span class="label">Suhu</span><span class="val">32°C</span><span class="badge err">Tinggi</span></div>
-    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-drop"/></svg></div><span class="label">Kelembapan</span><span class="val">65%</span><span class="badge ok">Normal</span></div>
-    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-sun"/></svg></div><span class="label">Intensitas Cahaya</span><span class="val">420 lx</span><span class="badge ok">Cukup</span></div>
-    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-users"/></svg></div><span class="label">Keberadaan</span><span class="val">Ada</span><span class="badge info">1 orang</span></div>
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-temp"/></svg></div><span class="label">Suhu</span><span class="val" data-bind="suhu">32°C</span><span class="badge err" data-badge="suhu">Tinggi</span></div>
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-drop"/></svg></div><span class="label">Kelembapan</span><span class="val" data-bind="lembap">65%</span><span class="badge ok" data-badge="lembap">Normal</span></div>
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-sun"/></svg></div><span class="label">Intensitas Cahaya</span><span class="val" data-bind="cahaya">420 lx</span><span class="badge ok" data-badge="cahaya">Cukup</span></div>
+    <div class="card sensor"><div class="ico"><svg class="icon"><use href="#i-users"/></svg></div><span class="label">Keberadaan</span><span class="val" data-bind="orangval">Ada</span><span class="badge info" data-badge="orang">1 orang</span></div>
   </div>
   <div class="sec-title"><h4>Kontrol Cepat</h4></div>
   <div class="card">
-    <div class="row"><svg class="icon"><use href="#i-bulb"/></svg><div class="grow"><b>Lampu Utama</b><small data-state>Menyala</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Lampu Utama"></button></div>
-    <div class="row"><svg class="icon"><use href="#i-fan"/></svg><div class="grow"><b>Kipas</b><small data-state>Mati</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Kipas"></button></div>
+    <div class="row"><svg class="icon"><use href="#i-bulb"/></svg><div class="grow"><b>Lampu Utama</b><small data-state>Menyala</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Lampu Utama" data-device="lampu"></button></div>
+    <div class="row"><svg class="icon"><use href="#i-fan"/></svg><div class="grow"><b>Kipas</b><small data-state>Mati</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Kipas" data-device="kipas"></button></div>
   </div>
 </template>
 
 <template id="tpl-room">
   <div class="screen-title"><small>Kamar Kos A2</small><h4>Ruangan</h4></div>
-  <div class="card chart-card"><div class="top"><div><span class="label">Suhu</span><div class="val">32°C</div></div><span class="badge err">Naik</span></div>
+  <div class="card chart-card"><div class="top"><div><span class="label">Suhu</span><div class="val" data-bind="suhu">32°C</div></div><span class="badge err">Naik</span></div>
     <svg class="chart" viewBox="0 0 280 80" preserveAspectRatio="none" role="img" aria-label="Grafik suhu naik dari pukul 06.00 ke 12.00"><polyline points="0,62 40,58 80,52 120,44 160,36 200,26 240,18 280,12" fill="none" stroke="var(--err)" stroke-width="2.5" stroke-linejoin="round"/></svg>
     <div class="chart-axis"><span>06.00</span><span>09.00</span><span>12.00</span></div></div>
   <div class="card chart-card"><div class="top"><div><span class="label">Kelembapan</span><div class="val">65%</div></div><span class="badge ok">Stabil</span></div>
@@ -222,8 +232,8 @@
 <template id="tpl-device">
   <div class="screen-title"><small>4 perangkat terhubung</small><h4>Perangkat</h4></div>
   <div class="card">
-    <div class="row"><svg class="icon"><use href="#i-bulb"/></svg><div class="grow"><b>Lampu Utama</b><small data-state>Online · Menyala</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Lampu Utama"></button></div>
-    <div class="row"><svg class="icon"><use href="#i-fan"/></svg><div class="grow"><b>Kipas Angin</b><small data-state>Online · Mati</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Kipas Angin"></button></div>
+    <div class="row"><svg class="icon"><use href="#i-bulb"/></svg><div class="grow"><b>Lampu Utama</b><small data-state>Online · Menyala</small></div><button class="switch" role="switch" aria-checked="true" aria-label="Lampu Utama" data-device="lampu"></button></div>
+    <div class="row"><svg class="icon"><use href="#i-fan"/></svg><div class="grow"><b>Kipas Angin</b><small data-state>Online · Mati</small></div><button class="switch" role="switch" aria-checked="false" aria-label="Kipas Angin" data-device="kipas"></button></div>
     <div class="row"><svg class="icon"><use href="#i-wifi"/></svg><div class="grow"><b>Sensor Suhu</b><small>Online</small></div><span class="badge ok">Terhubung</span></div>
     <div class="row"><svg class="icon"><use href="#i-wifi"/></svg><div class="grow"><b>Sensor Gerak</b><small>Tidak merespons</small></div><span class="badge err">Offline</span></div>
   </div>
@@ -234,10 +244,10 @@
   <div class="screen-title"><small>Analisis pintar harian</small><h4>AI Insight</h4></div>
   <div class="card row" style="margin-bottom:14px"><svg class="icon"><use href="#i-spark"/></svg><div class="grow"><b>3 rekomendasi hari ini</b><small>Berdasarkan pola sensor 24 jam terakhir</small></div></div>
   <div class="card rec">
-    <div style="display:flex;justify-content:space-between"><span class="badge err">Prioritas tinggi</span></div>
-    <h5>Gunakan kipas pada siang hari</h5>
-    <p>Suhu ruangan meningkat secara konsisten antara pukul 11.00–14.00.</p>
-    <div class="insight"><b>Mengapa disarankan?</b>Suhu di atas 30°C selama 2 jam terakhir dan ruangan sedang terisi.</div>
+    <div style="display:flex;justify-content:space-between"><span class="badge err" data-ai="prioritas">Prioritas tinggi</span></div>
+    <h5 data-ai="judul">Gunakan kipas pada siang hari</h5>
+    <p data-ai="ringkasan">Suhu ruangan meningkat secara konsisten antara pukul 11.00–14.00.</p>
+    <div class="insight"><b>Mengapa disarankan?</b><span data-ai="alasan">Suhu di atas 30°C selama 2 jam terakhir dan ruangan sedang terisi.</span><small data-ai="sumber" style="display:block;margin-top:6px;color:var(--caption)"></small></div>
     <button class="btn btn-accent btn-sm" data-apply>Terapkan Saran</button>
     <div class="rec-actions"><span>Apakah saran ini membantu?</span><span style="display:flex;gap:6px">
       <button class="icon-btn" aria-pressed="false" aria-label="Membantu" data-vote><svg class="icon"><use href="#i-up"/></svg></button>
@@ -257,6 +267,10 @@
   </div>
 </template>
 
+<script>
+  // Alamat backend. Kosong = server yang sama (npm start). Jika memakai Live Server, isi "http://localhost:3000".
+  window.SMARTROOM_API_BASE = "";
+</script>
 <script src="js/main.js"></script>
 </body>
 </html>
